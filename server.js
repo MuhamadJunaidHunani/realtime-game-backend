@@ -7,7 +7,7 @@ const app = express()
 const server = http.createServer(app)
 const io = new Server(server , {
     cors:{
-        origin:'http://localhost:5173',
+        origin:'https://arena-play.vercel.app/',
         methods:['GET' , 'POST']
     }
 })
@@ -28,10 +28,8 @@ io.on('connection', (socket) => {
       players[socket.id].x = data.x;
       players[socket.id].y = data.y;
       io.emit('car-update', { id: socket.id, car: players[socket.id] });
-
-      // Check if player crosses the finish line
       if (players[socket.id].x >= FINISH_LINE) {
-        io.emit('winner', socket.id); // Notify everyone about the winner
+        io.emit('winner', socket.id);
       }
     }
   });
