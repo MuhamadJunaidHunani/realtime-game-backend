@@ -8,14 +8,14 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Replace with your React app's URL
+    origin: "https://arena-play.vercel.app/", // Replace with your React app's URL
     methods: ["GET", "POST"],
   },
 });
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://arena-play.vercel.app/",
     methods: ["GET", "POST"],
   })
 );
