@@ -10,6 +10,7 @@ const io = new Server(server, {
   cors: {
     origin: "https://arena-play.vercel.app/", // Replace with your React app's URL
     methods: ["GET", "POST"],
+    transports: ['websocket', 'polling'], 
   },
 });
 
