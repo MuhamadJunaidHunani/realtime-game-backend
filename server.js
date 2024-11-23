@@ -17,6 +17,7 @@ app.use(
   cors({
     origin: "https://arena-play.vercel.app/",
     methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"],
   })
 );
 
