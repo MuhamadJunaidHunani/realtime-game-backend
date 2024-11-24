@@ -63,12 +63,9 @@ app.get("/", (req, res) => {
 });
 
 // Conditional `server.listen`
-  const PORT = process.env.PORT || 3000;
-  const HOST = '0.0.0.0'; // Listen on all network interfaces
-  
-  app.listen(PORT, HOST, () => {
-      console.log(`Server is running on http://${HOST}:${PORT}`);
+  const PORT = process.env.PORT || 8080;
+  server.listen(PORT, () => {
+    console.log(`Server is listening on http://localhost:${PORT}`);
   });
 
-// Export the server for serverless environments (e.g., Vercel)
 module.exports = server;
