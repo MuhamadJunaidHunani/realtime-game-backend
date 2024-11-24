@@ -8,7 +8,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://arena-play.vercel.app/", // Replace with your React app's URL
+    origin: "https://arena-play.vercel.app/", 
     methods: ["GET", "POST"],
     transports: ['websocket', 'polling'], 
   },
@@ -64,7 +64,7 @@ app.get("/", (req, res) => {
 
 // Conditional `server.listen`
 if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 3001;
+  const PORT = process.env.PORT || 3000;
   server.listen(PORT, () => {
     console.log(`Server is listening on http://localhost:${PORT}`);
   });
