@@ -63,12 +63,12 @@ app.get("/", (req, res) => {
 });
 
 // Conditional `server.listen`
-if (process.env.NODE_ENV !== "production") {
   const PORT = process.env.PORT || 3000;
-  server.listen(PORT, () => {
-    console.log(`Server is listening on http://localhost:${PORT}`);
+  const HOST = '0.0.0.0'; // Listen on all network interfaces
+  
+  app.listen(PORT, HOST, () => {
+      console.log(`Server is running on http://${HOST}:${PORT}`);
   });
-}
 
 // Export the server for serverless environments (e.g., Vercel)
 module.exports = server;
