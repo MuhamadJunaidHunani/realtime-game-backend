@@ -2,7 +2,7 @@ const { getRandomColor } = require("../Utils/colorUtil");
 
 const players = {}; // All players in all rooms
 const rooms = {}; // Tracks players in each room
-const FINISH_LINE = 700;
+const FINISH_LINE = 200;
 
 module.exports = (io, socket) => {
   socket.on("join-room", ({ roomId, player }) => {
@@ -42,20 +42,20 @@ module.exports = (io, socket) => {
     console.log(`Player ${socket.id} joined room: ${roomId}`);
   });
 
-  socket.on("car-move", ({ roomId, x, y }) => {
+  socket.on("car-move", ({ roomId: roomIde, distance , x, y }) => {
     if (players[socket.id]) {
       players[socket.id].x = x;
       players[socket.id].y = y;
 
       // Broadcast movement to other players in the room
-      io.to(roomId).emit("car-update", {
+      io.to(roomIde).emit("car-update", {
         id: socket.id,
         car: players[socket.id],
       });
 
       // Check for winner
-      if (x >= FINISH_LINE) {
-        io.to(roomId).emit("winner", socket.id);
+      if (distance >= FINISH_LINE) {
+        io.to(roomIde).emit("winner", socket.id);
       }
     }
   });
