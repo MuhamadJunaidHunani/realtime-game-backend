@@ -5,7 +5,7 @@ const rooms = {}; // Tracks players in each room
 const FINISH_LINE = 200;
 
 module.exports = (io, socket) => {
-  socket.on("join-room", ({ roomId, player }) => {
+  socket.on("join-room", ( {roomId, player}) => {
     console.log(roomId , player , "🫙📟");
     if(!roomId || player){
         return;
@@ -43,6 +43,7 @@ module.exports = (io, socket) => {
   });
 
   socket.on("car-move", ({ roomId: roomIde, distance , x, y }) => {
+    
     if (players[socket.id]) {
       players[socket.id].x = x;
       players[socket.id].y = y;
