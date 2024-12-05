@@ -2,17 +2,24 @@ const { getRandomColor } = require("../Utils/colorUtil");
 
 const players = {}; // All players in all rooms
 const rooms = {}; // Tracks players in each room
-const FINISH_LINE = 200;
+const FINISH_LINE = 3000;
 
 module.exports = (io, socket) => {
   socket.on("join-room", ( {roomId, player}) => {
-    console.log(roomId , player , "🫙📟");
-    if(!roomId || player){
+    console.log(roomId , player , socket.id, "🫙📟");
+   
+    if(!roomId || !player){
         return;
     }
     
     if (!rooms[roomId]) {
       rooms[roomId] = [];
+    }
+
+    for (let i = rooms[roomId].length - 1; i >= 0; i--) {
+      if (rooms[roomId][i] === null) {
+        rooms[roomId].splice(i, 1);
+      }
     }
 
     // Ensure only two players per room
@@ -51,6 +58,7 @@ module.exports = (io, socket) => {
       // Broadcast movement to other players in the room
       io.to(roomIde).emit("car-update", {
         id: socket.id,
+        distance:distance,
         car: players[socket.id],
       });
 
