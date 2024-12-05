@@ -1,7 +1,7 @@
 const { getRandomColor } = require("../Utils/colorUtil");
 
-const players = {}; // All players in all rooms
-const rooms = {}; // Tracks players in each room
+const players = {}; 
+const rooms = {}; 
 const FINISH_LINE = 3000;
 
 module.exports = (io, socket) => {
@@ -22,7 +22,7 @@ module.exports = (io, socket) => {
       }
     }
 
-    // Ensure only two players per room
+    
     if (rooms[roomId].length >= 2) {
       socket.emit("room-full", roomId);
       return;
@@ -42,7 +42,7 @@ module.exports = (io, socket) => {
     rooms[roomId].push(socket.id);
     socket.join(roomId);
 
-    // Notify the room about the new player
+    
     io.to(roomId).emit("player-joined", {
       players: rooms[roomId].map((id) => players[id]),
     });
@@ -61,7 +61,7 @@ module.exports = (io, socket) => {
         car: players[socket.id],
       });
 
-      // Check for winner
+      
       if (distance >= FINISH_LINE) {
         io.to(roomIde).emit("winner", socket.id);
       }
@@ -71,7 +71,7 @@ module.exports = (io, socket) => {
   socket.on("disconnect", () => {
     console.log(`Player disconnected: ${socket.id}`);
 
-    // Remove player from all rooms and notify others
+    
     Object.keys(rooms).forEach((roomId) => {
       const index = rooms[roomId].indexOf(socket.id);
       if (index !== -1) {
