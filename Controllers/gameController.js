@@ -55,10 +55,9 @@ module.exports = (io, socket) => {
       players[socket.id].x = x;
       players[socket.id].y = y;
 
-      // Broadcast movement to other players in the room
       io.to(roomIde).emit("car-update", {
         id: socket.id,
-        distance:distance,
+        distance,
         car: players[socket.id],
       });
 
