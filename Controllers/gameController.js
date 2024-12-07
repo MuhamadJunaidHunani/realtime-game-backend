@@ -2,7 +2,7 @@ const { assignNumber } = require("../Utils/colorUtil");
 
 const players = {}; 
 const rooms = {}; 
-const FINISH_LINE = 60;
+const FINISH_LINE = 500;
 
 module.exports = (io, socket) => {
   socket.on("join-room", ( {roomId, player}) => {
