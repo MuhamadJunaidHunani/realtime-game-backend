@@ -1,12 +1,11 @@
-const { getRandomColor } = require("../Utils/colorUtil");
+const { assignNumber } = require("../Utils/colorUtil");
 
 const players = {}; 
 const rooms = {}; 
-const FINISH_LINE = 3000;
+const FINISH_LINE = 60;
 
 module.exports = (io, socket) => {
   socket.on("join-room", ( {roomId, player}) => {
-    console.log(roomId , player , socket.id, "🫙📟");
    
     if(!roomId || !player){
         return;
@@ -32,30 +31,27 @@ module.exports = (io, socket) => {
       id: socket.id,
       x: 0,
       y: 0,
-      color: getRandomColor(),
+      playerNumber: assignNumber(rooms[roomId] ,  players),
       name: player?.name,
       playerId: player?.uid,
       email: player?.email,
     };
-    console.log(socket.id , "ppppppp");
     players[socket.id] = playerData;
     rooms[roomId].push(socket.id);
     socket.join(roomId);
 
-    
     io.to(roomId).emit("player-joined", {
       players: rooms[roomId].map((id) => players[id]),
     });
-    console.log(`Player ${socket.id} joined room: ${roomId}`);
   });
 
-  socket.on("car-move", ({ roomId: roomIde, distance , x, y }) => {
+  socket.on("car-move", ({roomId, distance , x, y }) => {
     
     if (players[socket.id]) {
       players[socket.id].x = x;
       players[socket.id].y = y;
 
-      io.to(roomIde).emit("car-update", {
+      io.to(roomId).emit("car-update", {
         id: socket.id,
         distance,
         car: players[socket.id],
@@ -63,14 +59,12 @@ module.exports = (io, socket) => {
 
       
       if (distance >= FINISH_LINE) {
-        io.to(roomIde).emit("winner", socket.id);
+        io.to(roomId).emit("winner", socket.id);
       }
     }
   });
 
   socket.on("disconnect", () => {
-    console.log(`Player disconnected: ${socket.id}`);
-
     
     Object.keys(rooms).forEach((roomId) => {
       const index = rooms[roomId].indexOf(socket.id);
